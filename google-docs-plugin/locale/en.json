@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Google Docs Integration",
+    "description": "Read and modify Google Docs documents using OAuth2 authentication"
+  },
+  "tools": {
+    "google_docs_auth": {
+      "title": "Authenticate with Google",
+      "description": "Start OAuth2 flow to authenticate with Google Docs API"
+    },
+    "google_docs_read": {
+      "title": "Read Google Doc",
+      "description": "Read the content of a Google Doc by its document ID"
+    },
+    "google_docs_write": {
+      "title": "Write to Google Doc",
+      "description": "Update or create content in a Google Doc"
+    },
+    "google_docs_list": {
+      "title": "List Google Docs",
+      "description": "List documents in your Google Drive"
+    }
+  },
+  "auth": {
+    "flow_name": "Google OAuth2",
+    "authorize_prompt": "Open this URL to authorize access to Google Docs",
+    "success": "Successfully authenticated with Google",
+    "error": "Authentication failed"
+  }
+}

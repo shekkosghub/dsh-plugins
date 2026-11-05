@@ -1,0 +1,3 @@
+- insert:
+    - id: google-docs
+      name: '@local/google-docs'
