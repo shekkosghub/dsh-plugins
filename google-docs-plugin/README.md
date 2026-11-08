@@ -153,7 +153,7 @@ El plugin sigue la arquitectura de DeepSeek Harness:
 Este plugin fue creado usando **vibecoding** - programación conversacional con IA.
 
 - **Modelo usado**: Qwen3.8 Max (Alibaba Token Plan Individual)
-- **Tiempo de desarrollo**: ~4-5 horas
+- **Tiempo de desarrollo**: ~1 hora
 - **Líneas de código**: ~700
 - **Enfoque**: Conversación iterativa en tiempo real
 
