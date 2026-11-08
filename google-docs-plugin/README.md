@@ -160,11 +160,3 @@ Este plugin fue creado usando **vibecoding** - programación conversacional con 
 ## Licencia
 
 MIT
-
-## Contribuir
-
-Las contribuciones son bienvenidas. Este plugin sirve como ejemplo de cómo crear plugins para DeepSeek Harness usando vibecoding.
-
-## Soporte
-
-Para problemas o preguntas, abre un issue en el repositorio.
