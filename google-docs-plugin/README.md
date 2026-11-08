@@ -42,13 +42,37 @@ Un plugin para DeepSeek Harness que permite leer y escribir documentos de Google
 
 ### Paso 3: Autenticarse
 
-1. Haz clic en "Start Authentication"
-2. Autoriza el acceso en la ventana de Google
-3. Copia el código de autorización de la URL
-4. Usa el comando en el chat:
-   ```
-   /google-docs-complete-auth TU_CODIGO_AQUI
-   ```
+El proceso de autenticación es sencillo y guiado:
+
+#### 3.1 Iniciar la autenticación
+
+Haz clic en **"Start Authentication"** en la configuración del plugin. Se abrirá una ventana del navegador para autorizar el acceso a tu cuenta de Google:
+
+![Inicio de autenticación OAuth2](https://res.cloudinary.com/invztuml/image/upload/v1794168889/google_docs-dsh_plugin-start_oauth.png)
+
+#### 3.2 Obtener el código de autorización
+
+Después de autorizar, Google te redirigirá a una URL que contiene el código de autorización. Copia el valor del parámetro `code` de la URL:
+
+![Obtener código de autorización](https://res.cloudinary.com/invztuml/image/upload/v1794168888/google_docs-dsh_plugin-get_code.png)
+
+#### 3.3 Completar la autenticación
+
+Usa el comando en el chat de DeepSeek Harness para completar el proceso:
+
+```
+/google-docs-complete-auth TU_CODIGO_AQUI
+```
+
+![Completar autenticación con comando](https://res.cloudinary.com/invztuml/image/upload/v1794168889/google_docs-dsh_plugin-complete_authentication.png)
+
+#### 3.4 Verificación exitosa
+
+Una vez completado, verás un mensaje confirmando que la autenticación fue exitosa:
+
+![Autenticación completada exitosamente](https://res.cloudinary.com/invztuml/image/upload/v1794168889/google_docs-dsh_plugin-authentication_completed.png)
+
+¡Listo! Ahora puedes usar todas las herramientas del plugin.
 
 ## Uso
 
@@ -136,3 +160,11 @@ Este plugin fue creado usando **vibecoding** - programación conversacional con 
 ## Licencia
 
 MIT
+
+## Contribuir
+
+Las contribuciones son bienvenidas. Este plugin sirve como ejemplo de cómo crear plugins para DeepSeek Harness usando vibecoding.
+
+## Soporte
+
+Para problemas o preguntas, abre un issue en el repositorio.
