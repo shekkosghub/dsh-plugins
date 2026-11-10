@@ -1,0 +1,25 @@
+# Entorno y secretos — nunca subir
+.env
+.env.*
+!.env.example
+*.local
+.credentials.yaml
+*.key
+*.pem
+*.p12
+
+# Dependencias
+node_modules/
+
+# Imágenes generadas por el plugin qwen-image-command
+out/
+
+# Logs y temporales
+*.log
+npm-debug.log*
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,6 @@
+- insert:
+    - id: qwen-image-command
+      name: '@local/qwen-image-command'
+      config:
+        model: qwen-image-3.0-pro
+        outputDir: out
