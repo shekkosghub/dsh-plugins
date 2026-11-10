@@ -13,9 +13,9 @@ const SCOPES = [
   'https://www.googleapis.com/auth/drive.readonly'
 ].join(' ');
 
-// Credential keys for storing OAuth config (must match /^[A-Za-z_][A-Za-z0-9_]*$/)
-const OAUTH_CONFIG_KEY = 'google_docs_oauth_config';
-const OAUTH_TOKEN_KEY = 'google_docs_oauth_token';
+// Credential keys for storing OAuth config (must use <scope>/<id> format for DSH)
+const OAUTH_CONFIG_KEY = 'google-docs/oauth-config';
+const OAUTH_TOKEN_KEY = 'google-docs/oauth-token';
 
 export const inject = ['tools', 'credentials', 'authorization', 'commands'];
 
@@ -25,10 +25,12 @@ export function apply(ctx) {
     // First try to read from credentials storage
     const record = await ctx.credentials.readRecord(OAUTH_CONFIG_KEY);
     if (record) {
+      // DSH returns CredentialRecord with kind + payload; unwrap payload
+      const data = record.payload ?? record;
       // Handle both JSON string (from UI) and object (from tool)
-      if (typeof record === 'string') {
+      if (typeof data === 'string') {
         try {
-          const parsed = JSON.parse(record);
+          const parsed = JSON.parse(data);
           if (parsed.clientId && parsed.clientSecret) {
             return {
               clientId: parsed.clientId,
@@ -38,10 +40,10 @@ export function apply(ctx) {
         } catch {
           // Fall through to env vars
         }
-      } else if (record.clientId && record.clientSecret) {
+      } else if (data.clientId && data.clientSecret) {
         return {
-          clientId: record.clientId,
-          clientSecret: record.clientSecret
+          clientId: data.clientId,
+          clientSecret: data.clientSecret
         };
       }
     }
@@ -59,8 +61,8 @@ export function apply(ctx) {
   // Helper to save OAuth credentials to storage
   async function saveOAuthConfig(clientId, clientSecret) {
     await ctx.credentials.modifyRecord(OAUTH_CONFIG_KEY, () => ({
-      clientId,
-      clientSecret
+      kind: 'grant',
+      payload: { clientId, clientSecret }
     }));
   }
 
@@ -71,7 +73,9 @@ export function apply(ctx) {
       throw new Error('Google OAuth credentials not configured. Please configure them in the plugin settings.');
     }
 
-    const record = await ctx.credentials.readRecord(OAUTH_TOKEN_KEY);
+    const rawRecord = await ctx.credentials.readRecord(OAUTH_TOKEN_KEY);
+    // DSH returns CredentialRecord with kind + payload; unwrap payload
+    const record = rawRecord?.payload ?? rawRecord;
     if (!record?.token) {
       throw new Error('Not authenticated with Google. Please authenticate first using the plugin UI or google_docs_auth tool.');
     }
@@ -100,9 +104,12 @@ export function apply(ctx) {
 
       const tokens = await response.json();
       await ctx.credentials.modifyRecord(OAUTH_TOKEN_KEY, () => ({
-        token: tokens.access_token,
-        refreshToken: tokens.refresh_token,
-        expiresAt: Date.now() + (tokens.expires_in * 1000)
+        kind: 'grant',
+        payload: {
+          token: tokens.access_token,
+          refreshToken: tokens.refresh_token,
+          expiresAt: Date.now() + (tokens.expires_in * 1000)
+        }
       }));
       return tokens.access_token;
     }
@@ -225,11 +232,12 @@ Steps:
     handler: async () => {
       try {
         const config = await getOAuthConfig();
-        const tokenRecord = await ctx.credentials.readRecord(OAUTH_TOKEN_KEY);
+        const rawTokenRecord = await ctx.credentials.readRecord(OAUTH_TOKEN_KEY);
+        const tokenData = rawTokenRecord?.payload ?? rawTokenRecord;
         return {
           hasCredentials: !!(config.clientId && config.clientSecret),
-          isAuthenticated: !!tokenRecord?.token,
-          tokenExpiresAt: tokenRecord?.expiresAt
+          isAuthenticated: !!tokenData?.token,
+          tokenExpiresAt: tokenData?.expiresAt
         };
       } catch (error) {
         return { error: error.message };
@@ -301,9 +309,12 @@ Steps:
 
         const tokens = await response.json();
         await ctx.credentials.modifyRecord(OAUTH_TOKEN_KEY, () => ({
-          token: tokens.access_token,
-          refreshToken: tokens.refresh_token,
-          expiresAt: Date.now() + (tokens.expires_in * 1000)
+          kind: 'grant',
+          payload: {
+            token: tokens.access_token,
+            refreshToken: tokens.refresh_token,
+            expiresAt: Date.now() + (tokens.expires_in * 1000)
+          }
         }));
 
         return { 
@@ -392,9 +403,12 @@ Steps:
 
         const tokens = await response.json();
         await ctx.credentials.modifyRecord(OAUTH_TOKEN_KEY, () => ({
-          token: tokens.access_token,
-          refreshToken: tokens.refresh_token,
-          expiresAt: Date.now() + (tokens.expires_in * 1000)
+          kind: 'grant',
+          payload: {
+            token: tokens.access_token,
+            refreshToken: tokens.refresh_token,
+            expiresAt: Date.now() + (tokens.expires_in * 1000)
+          }
         }));
 
         return { 
